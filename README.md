@@ -1,4 +1,68 @@
-# Frontend Dashboard
+# GENIUSEE Test Task
+
+## Clone repository
+
+```
+git clone https://github.com/OlegSyng/ucoach.git
+cd ucoach
+```
+
+## Install dependencies
+
+```
+nvm use // use project version of Node.js if you are using nvm
+npm install
+```
+
+## Run development server
+
+```
+npm run dev
+```
+
+## Test task
+
+
+### Objective
+
+You need to create a simple checkout form. Main goal of the task is to create good and smooth UI/UX for the end user. Also it's important to make this solution maintainable and build good architecture of the application. Don't hesitate to use third-party packages for form validation and UI libraries.
+
+### Requirements
+- Add a minimal styling for the form.
+- Validate passed values.
+- Log form values on successful submit.
+### Contents of form
+Section 1: Personal information
+- First name - string, required.
+- Last name - string, required.
+
+Section 2. Contact information
+- Email for receipt - string, should fit email format, optional.
+- Phone numbers - an array of strings, min - 1 entry, max - 3 entries
+- Country - string, required, should be a select.
+- Address - string, required.
+
+Section 3. Payment details
+- Credit card - 16 digits, required.
+- CVV2 code - 3 digits, required.
+- Agreement with terms of use - boolean, required.
+
+### Validation
+- Validate fields on field blur and on form submit.
+- Show error messages if the entered value is invalid.
+- Clear error if the field had been invalid and a user passed a valid value later.
+
+### UI/UX requirements
+1. Add input masks for credit card, CVV2 code fields, email and phone field.
+2. Add logic on submission failure: the app should scroll to the first invalid input and focus
+on it if validation failed
+3. Add async validation for the email field. For development purposes, you need to create a
+mock handler that resolves a promise in 75% after 1s.
+4. Each section should contain a sticky heading.
+5. Add logic that prevents multiple submissions. A submit handler should resolve a
+promise after 1s. The button should indicate loading state
+
+<!-- # Frontend Dashboard
 
 ## project structure
 
@@ -56,4 +120,4 @@ NOTE: if the user tries to remove the cookie maually from the browser we will de
 
 ## animations
 
-regading the animations i've used framer-motion lib instead of tailwindcss-animate pulgin, it's easy to use and it's the best for react apps.
+regading the animations i've used framer-motion lib instead of tailwindcss-animate pulgin, it's easy to use and it's the best for react apps. -->

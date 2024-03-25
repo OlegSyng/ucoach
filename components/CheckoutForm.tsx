@@ -1,10 +1,10 @@
 "use client"
-import { Output, email, safeParse, string } from "valibot";
+import { Output } from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useCountries } from "@/hooks/use-Countries";
 import { type SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { InputMask } from "@/components/InputMask";
+import { InputMask, EmailInputMask } from "@/components/InputMask";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
@@ -33,56 +33,32 @@ export default function CheckoutForm() {
     });
 
     const { fields, remove, append } = useFieldArray({
-        control: form.control,
         name: "phoneNumbers",
+        control: form.control,
     });
 
     const { data: countryCodes } = useCountries();
 
-    const handleCheckout: SubmitHandler<CheckoutFormValues> = (data) => {
+    const handleCheckout: SubmitHandler<CheckoutFormValues> = async (data, event) => {
+        event?.preventDefault();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         console.log(data);
-
-        // form.reset();
-    } 
-
-    function maskEmail(userInput: string): (string | RegExp)[] {
-        // Regular expression for email validation and formatting
-        const emailRegex = /^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,6})$/;
-        const userInputArray = userInput.split('');
-
-        if (!userInputArray.includes('@')) {
-            return userInputArray.map(() => /^([a-zA-Z0-9._-]+)/g);
-        }
-
-      
-        // Check if the input matches the email regex
-        if (emailRegex.test(userInput)) {
-          // If the input is a valid email address, return the formatted email
-          const parts = userInput.split('@');
-          const username = parts[0].replace(/./g, '*'); // Replace all characters in username with *
-          const domain = parts[1]; // Keep the domain unchanged
-          return [`${username}@${domain}`];
-        } else {
-          // If the input is not a valid email address, return an empty string or handle the error as needed
-          
-          return userInput.split('').map(() => /./g);
-        }
-      }
+    }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleCheckout) as () => void}>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Checkout Form</h3>
-                <p className="mb-8 text-slate-500">Your email adress will not be published. Required fields are marked *</p>
+                <h3 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-3">Checkout Form</h3>
+                <p className="mb-8 text-slate-500">Your email adress, phone numbres and other personal information will not be published. Required fields are marked *</p>
                 <Separator />
-                <section>
-                    <h4 className="text-lg font-semibold my-4">Personal Information</h4>
+                <section className="relative">
+                    <h4 className="sticky top-0 text-lg font-semibold my-4 bg-white">Personal Information</h4>
                     <FormField
                         control={form.control}
                         name="firstName"
                         render={({ field }) => (
                             <FormItem className="mb-4">
-                                <FormLabel>First Name</FormLabel>
+                                <FormLabel>First Name *</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="First Name"
@@ -98,7 +74,7 @@ export default function CheckoutForm() {
                         name="lastName"
                         render={({ field }) => (
                             <FormItem className="mb-4">
-                                <FormLabel>Last Name</FormLabel>
+                                <FormLabel>Last Name *</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="Last Name"
@@ -111,8 +87,8 @@ export default function CheckoutForm() {
                     />
                 </section>
                 <Separator />
-                <section>
-                    <h4 className="text-lg font-semibold my-4">Contract Information</h4>
+                <section className="relative">
+                    <h4 className="sticky top-0 text-lg font-semibold my-4 bg-white">Contract Information</h4>
                     <FormField
                         control={form.control}
                         name="email"
@@ -120,21 +96,19 @@ export default function CheckoutForm() {
                             <FormItem className="mb-4">
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <InputMask
+                                    <EmailInputMask
                                         placeholder="Email"
                                         value={field.value}
                                         onChange={field.onChange}
                                         onBlur={field.onBlur}
-                                        // mask={[/[a-zA-Z0-9._%+-]+/, '@', /[a-zA-Z0-9.-]+/, '.', /[a-zA-Z]{2,}/]}
-                                        mask={maskEmail}
                                     />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FormLabel className="block mb-2">Phone Numbers</FormLabel>
-                    {fields.map((phoneField, index) => (   
+                    <FormLabel className="block mb-2">Phone Numbers *</FormLabel>
+                    {fields.map((phoneField, index) => (
                         <div className="flex gap-2 mb-4" key={phoneField.id}>
                             <FormItem className="grow">
                                 <FormControl>
@@ -142,8 +116,8 @@ export default function CheckoutForm() {
                                         placeholder="Phone Number"
                                         {...form.register(`phoneNumbers.${index}.value`)}
                                     />
-                                </FormControl>
-                                <FormMessage />
+                                    </FormControl>
+                                    <FormMessage>{form.formState.errors?.phoneNumbers?.[index]?.value?.message}</FormMessage>
                             </FormItem>
                             <Button 
                                 size="icon"
@@ -157,6 +131,7 @@ export default function CheckoutForm() {
                     ))}
                     <Button 
                         type="button"
+                        variant="secondary"
                         onClick={() => append({value: ''})}
                         disabled={fields.length >= 3}
                         className="mb-4 disabled:hidden"
@@ -169,7 +144,7 @@ export default function CheckoutForm() {
                         name="countryCode"
                         render={({ field }) => (
                             <FormItem className="mb-4">
-                                <FormLabel>Country</FormLabel>
+                                <FormLabel>Country *</FormLabel>
                                 <FormControl>
                                     <Select
                                         value={field.value}
@@ -196,7 +171,7 @@ export default function CheckoutForm() {
                         name="address"
                         render={({ field }) => (
                             <FormItem className="mb-4">
-                                <FormLabel>Address</FormLabel>
+                                <FormLabel>Address *</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="Address"
@@ -209,8 +184,8 @@ export default function CheckoutForm() {
                     />
                 </section>
                 <Separator />
-                <section>
-                    <h4 className="text-lg font-semibold my-4">Payment Details</h4>
+                <section className="relative">
+                    <h4 className="sticky top-0 text-lg font-semibold my-4 bg-white">Payment Details</h4>
                     <div className="flex gap-2 mb-4">
                         <FormField
                             control={form.control}
@@ -219,7 +194,7 @@ export default function CheckoutForm() {
                                 <FormItem className="grow">
                                     <FormControl>
                                         <InputMask
-                                            placeholder="Card Number"
+                                            placeholder="Card Number *"
                                             value={field.value}
                                             onChange={field.onChange}
                                             onBlur={field.onBlur}
@@ -237,7 +212,7 @@ export default function CheckoutForm() {
                                 <FormItem className="w-32">
                                     <FormControl>
                                         <InputMask
-                                            placeholder="CCV2"
+                                            placeholder="CCV2 *"
                                             value={field.value}
                                             onChange={field.onChange}
                                             onBlur={field.onBlur}
@@ -256,12 +231,16 @@ export default function CheckoutForm() {
                             <FormItem className="mb-4">
                                 <FormControl>
                                     <div className="flex items-center space-x-2">
-                                        <Checkbox id="terms" checked={field.value} onChange={field.onChange} />
+                                        <Checkbox
+                                            id="terms"
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
                                         <label
                                             htmlFor="terms"
                                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         >
-                                            Accept terms and conditions
+                                            Accept terms and conditions *
                                         </label>
                                     </div>          
                                 </FormControl>
@@ -272,7 +251,7 @@ export default function CheckoutForm() {
                 </section>
                 <Button 
                     type="submit"
-                    className="mt-8 w-32"
+                    className="mt-8 w-32 flex ml-auto"
                     disabled={form.formState.isSubmitting}
                 >
                     {form.formState.isSubmitting ? <LoaderCircle  className="animate-spin" /> : 'Submit'}

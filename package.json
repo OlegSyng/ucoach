@@ -27,6 +27,7 @@
     "react-text-mask": "^5.5.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "text-mask-addons": "^3.8.0",
     "valibot": "^0.30.0"
   },
   "devDependencies": {
