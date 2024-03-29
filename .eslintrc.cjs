@@ -13,6 +13,7 @@ const config = {
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    "@typescript-eslint/consistent-type-definitions": "off",
   },
 }
 

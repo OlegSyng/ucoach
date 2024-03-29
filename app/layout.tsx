@@ -3,7 +3,12 @@ import { Inter } from "next/font/google";
 import { QueryProvider } from "@/providers/QueryProvider";
 import "../styles/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  fallback: ["system-ui", "Roboto", "sans-serif"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
