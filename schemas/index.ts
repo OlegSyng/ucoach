@@ -1,0 +1,1 @@
+export { registerUserCoachSchema } from "./registerCoachSchema";

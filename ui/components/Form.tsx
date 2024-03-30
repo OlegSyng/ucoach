@@ -9,9 +9,9 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form"
-
-import { cn } from "@/ui/utils/cn"
 import { Label } from "@/ui/components/Label"
+import { SafeParseResult, BaseSchema } from "valibot"
+import { cn } from "@/ui/utils/cn"
 
 const Form = FormProvider
 
@@ -163,6 +163,35 @@ const FormMessage = React.forwardRef<
   )
 })
 FormMessage.displayName = "FormMessage"
+
+interface FormPasswordMessageProps
+  extends React.HTMLAttributes<HTMLUListElement> {
+    passwordResult: SafeParseResult<BaseSchema>
+  }
+
+const FormPasswordMessage = React.forwardRef<
+  HTMLUListElement,
+  FormPasswordMessageProps
+>(({ className, children, passwordResult, ...props }, ref) => {
+  const { error, formMessageId } = useFormField()
+  const body = error ? String(error?.message) : children
+
+  if (!body) {
+    return null
+  }
+
+  return (
+    <ul
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-sm font-medium text-destructive", className)}
+      {...props}
+    >
+      {body}
+    </ul>
+  )
+})
+FormPasswordMessage.displayName = "FormPasswordMessage"
 
 export {
   useFormField,

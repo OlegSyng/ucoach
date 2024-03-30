@@ -5,10 +5,10 @@ const config = {
     "singleQuote": true,
     "jsxSingleQuote": true,
     "plugins": [
-        "@trivago/prettier-plugin-sort-imports",
-        "prettier-plugin-tailwtaindcss",
+        require("@trivago/prettier-plugin-sort-imports"),
+        require("prettier-plugin-tailwindcss"),
     ],
-    "tailwindFunctions": ['clsx'],
+    "tailwindFunctions": ['clsx', 'tv'],
     "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^@app/(.*)$", "^[./]"],
     "importOrderSeparation": false,
 }

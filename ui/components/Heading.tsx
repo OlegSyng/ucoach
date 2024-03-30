@@ -1,10 +1,9 @@
 import { ComponentPropsWithoutRef, createElement, forwardRef } from "react";
-import { cva } from "class-variance-authority";
+import { tv } from "tailwind-variants"
 import { cn } from "@/ui/utils/cn";
 
-const headingVariants = cva([
-    "text-slate-800 dark:text-slate-100 font-semibold block"
-], {
+const headingVariants = tv({
+  base:  "text-slate-800 dark:text-slate-100 font-semibold block",
   variants: {
     level: {
       1: "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",

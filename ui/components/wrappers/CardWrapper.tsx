@@ -1,11 +1,10 @@
 import React, { ComponentPropsWithoutRef, forwardRef } from "react";
-import { cva, type VariantProps } from "class-variance-authority"
+import { tv, type VariantProps } from "tailwind-variants"
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/ui/utils/cn";
 
-const cardVariants = cva([
-    "rounded-sm border p-5 shadow-lg"
-], {
+const cardVariants = tv({
+  base: "rounded-sm border p-5 shadow-lg",
   variants: {
     intent: {
       default:
