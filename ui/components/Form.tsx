@@ -11,6 +11,7 @@ import {
 } from "react-hook-form"
 import { Label } from "@/ui/components/Label"
 import { SafeParseResult, BaseSchema } from "valibot"
+import { Check, X } from "lucide-react"
 import { cn } from "@/ui/utils/cn"
 
 const Form = FormProvider
@@ -169,12 +170,13 @@ interface FormPasswordMessageProps
     passwordResult: SafeParseResult<BaseSchema>
   }
 
-const FormPasswordMessage = React.forwardRef<
+const FormMessagePassword = React.forwardRef<
   HTMLUListElement,
   FormPasswordMessageProps
 >(({ className, children, passwordResult, ...props }, ref) => {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message) : children
+  const { issues } = passwordResult
+  const { formMessageId } = useFormField()
+  const body = issues ?? children
 
   if (!body) {
     return null
@@ -184,14 +186,22 @@ const FormPasswordMessage = React.forwardRef<
     <ul
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
+      className={cn("text-sm font-medium text-destructive ml-6 list-disc [&>li]:mt-2", className)}
       {...props}
     >
-      {body}
+      {Array.isArray(body) ? (
+        <>
+          <li>At least 8 characrers</li>
+          <li>At least 1 lowercase letter</li>
+          <li>At least 1 uppercase letter</li>
+          <li>At least 1 number</li>
+          <li>At least 1 special character</li>
+        </>
+      ) : <li>{body}</li>}
     </ul>
   )
 })
-FormPasswordMessage.displayName = "FormPasswordMessage"
+FormMessagePassword.displayName = "FormPasswordMessage"
 
 export {
   useFormField,
@@ -201,5 +211,6 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormMessagePassword,
   FormField,
 }

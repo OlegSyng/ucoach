@@ -5,9 +5,12 @@ import { Heading } from "@/ui/components/Heading";
 import { Input } from "@/ui/components/inputs"
 import { Button } from "@/ui/components/Button";
 import { Loading } from "@/ui/components/Loading";
-import { Form, FormControl, FormField, FormItem, FormMessage, FormDescription, FormLabel } from "@/ui/components/Form";
+import { Form, FormControl, FormField, FormItem, FormMessage, FormDescription, FormMessagePassword, FormLabel } from "@/ui/components/Form";
 import { cn } from "@/ui/utils/cn";
+import { safeParse, pick } from "valibot";
 import { registerUserCoachSchema } from "@/schemas";
+
+const passwordSchema = pick(registerUserCoachSchema, ["password"]);
 
 export default function RegisterRoute() {
     const form = useForm({
@@ -94,14 +97,7 @@ export default function RegisterRoute() {
                                         placeholder="Create password"
                                     />
                                 </FormControl>
-                                <FormDescription>
-                                    <ul className="ml-6 list-disc [&>li]:mt-2">
-                                        <li>At least 8 characters</li>
-                                        <li>At least 1 uppercase</li>
-                                        <li>At least 1 special character</li>
-                                    </ul>
-                                </FormDescription>
-                                <FormMessage />
+                                <FormMessagePassword passwordResult={safeParse(passwordSchema, field.value)} />
                             </FormItem>
                         )}
                     />
