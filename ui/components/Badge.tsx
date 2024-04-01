@@ -33,12 +33,12 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 
 
 const badgeHintVariants = tv({
-    base: "inline-flex items-center rounded-sm border px-4 py-0.5 min-h-2.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+    base: "inline-flex items-center rounded-[2px] px-4 py-0.5 min-h-2.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
     variants: {
         intent: {
-            pristine: "text-foreground bg-secondary",
-            error: "border-transparent bg-destructive text-destructive-foreground",
-            success: "border-transparent bg-success text-success-foreground",
+            pristine: "text-foreground bg-slate-100",
+            error: "bg-destructive text-destructive-foreground",
+            success: "bg-success text-success-foreground",
         },
     },
     defaultVariants: {
