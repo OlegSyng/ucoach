@@ -7,10 +7,10 @@ import { Button } from "@/ui/components/Button";
 import { Loading } from "@/ui/components/Loading";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormDescription, FormMessagePassword, FormLabel } from "@/ui/components/Form";
 import { cn } from "@/ui/utils/cn";
-import { safeParse, pick } from "valibot";
+import { safeParse } from "valibot";
 import { registerUserCoachSchema } from "@/schemas";
 
-const passwordSchema = pick(registerUserCoachSchema, ["password"]);
+const passwordSchema = registerUserCoachSchema.entries.password;
 
 export default function RegisterRoute() {
     const form = useForm({
@@ -93,11 +93,14 @@ export default function RegisterRoute() {
                                 <FormControl>
                                     <Input
                                         type="password"
+                                        autoComplete="off"
                                         {...field}
                                         placeholder="Create password"
                                     />
                                 </FormControl>
-                                <FormMessagePassword passwordResult={safeParse(passwordSchema, field.value)} />
+                                <FormMessagePassword 
+                                    passwordResult={safeParse(passwordSchema, field.value)}
+                                />
                             </FormItem>
                         )}
                     />

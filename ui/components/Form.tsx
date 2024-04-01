@@ -10,8 +10,8 @@ import {
   useFormContext,
 } from "react-hook-form"
 import { Label } from "@/ui/components/Label"
-import { SafeParseResult, BaseSchema } from "valibot"
-import { Check, X } from "lucide-react"
+import { BadgeHint } from "@/ui/components/Badge"
+import type { SafeParseResult, SchemaIssue, StringSchema } from "valibot"
 import { cn } from "@/ui/utils/cn"
 
 const Form = FormProvider
@@ -167,18 +167,21 @@ FormMessage.displayName = "FormMessage"
 
 interface FormPasswordMessageProps
   extends React.HTMLAttributes<HTMLUListElement> {
-    passwordResult: SafeParseResult<BaseSchema>
+    passwordResult: SafeParseResult<StringSchema>
   }
 
 const FormMessagePassword = React.forwardRef<
   HTMLUListElement,
   FormPasswordMessageProps
 >(({ className, children, passwordResult, ...props }, ref) => {
-  const { issues } = passwordResult
-  const { formMessageId } = useFormField()
+  const { issues: schemaIssues, success } = passwordResult
+  const { formMessageId, isTouched } = useFormField()
+  const [ issues, setIssues ] = React.useState<SchemaIssue[]>(schemaIssues ?? [])
   const body = issues ?? children
 
-  if (!body) {
+  console.log(passwordResult)
+
+  if (!body || success || !isTouched) {
     return null
   }
 
@@ -186,18 +189,12 @@ const FormMessagePassword = React.forwardRef<
     <ul
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive ml-6 list-disc [&>li]:mt-2", className)}
+      className={cn("text-sm font-medium text-destructive list-disc [&>li]:mr-1", className)}
       {...props}
     >
-      {Array.isArray(body) ? (
-        <>
-          <li>At least 8 characrers</li>
-          <li>At least 1 lowercase letter</li>
-          <li>At least 1 uppercase letter</li>
-          <li>At least 1 number</li>
-          <li>At least 1 special character</li>
-        </>
-      ) : <li>{body}</li>}
+      {Array.isArray(body) ? body.map((issue, index) => (
+        <BadgeHint key={index} intent="pristine" />
+      )) : <li>{body}</li>}
     </ul>
   )
 })

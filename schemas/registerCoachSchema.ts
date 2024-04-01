@@ -5,6 +5,16 @@ const lowercaseRegex = /[a-z]/;
 const numberRegex = /[0-9]/;
 const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
+export const passwordSchemaMessage = {
+    minLength: 'At least 8 characters',
+    lowercase: 'At least 1 lowercase letter',
+    uppercase: 'At least 1 uppercase letter',
+    number: 'At least 1 number',
+    specialChar: 'At least 1 special character',
+    excludes: 'Password cannot contain spaces',
+    maxLength: 'Password is too long',
+};
+
 export const registerUserCoachSchema = object({
     firstName: string([
         minLength(1, 'First name is required'),
@@ -24,12 +34,12 @@ export const registerUserCoachSchema = object({
         maxLength(20, 'Username is too long'),
     ]),
     password: string([
-        minLength(8, 'At least 8 characters'),
-        regex(lowercaseRegex, 'At least 1 lowercase letter'),
-        regex(uppercaseRegex, 'At least 1 uppercase letter'),
-        regex(numberRegex, 'At least 1 number'),
-        regex(specialCharRegex, 'At least 1 special character'),
-        excludes(' ', 'Password cannot contain spaces'),
-        maxLength(20, 'Password is too long'),
+        minLength(8, passwordSchemaMessage.minLength),
+        regex(lowercaseRegex, passwordSchemaMessage.lowercase),
+        regex(uppercaseRegex, passwordSchemaMessage.uppercase),
+        regex(numberRegex, passwordSchemaMessage.number),
+        regex(specialCharRegex, passwordSchemaMessage.specialChar),
+        excludes(' ', passwordSchemaMessage.excludes),
+        maxLength(20, passwordSchemaMessage.maxLength),
     ]),
 });

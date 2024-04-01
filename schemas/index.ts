@@ -1,1 +1,1 @@
-export { registerUserCoachSchema } from "./registerCoachSchema";
+export { registerUserCoachSchema, passwordSchemaMessage } from "./registerCoachSchema";
