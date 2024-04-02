@@ -5,7 +5,8 @@ import { Heading } from "@/ui/components/Heading";
 import { Input } from "@/ui/components/inputs"
 import { Button } from "@/ui/components/Button";
 import { Loading } from "@/ui/components/Loading";
-import { Form, FormControl, FormField, FormItem, FormMessage, FormDescription, FormMessagePassword, FormLabel } from "@/ui/components/Form";
+import { PasswordStrength } from "@/ui/partials/PasswordStrength";
+import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from "@/ui/components/Form";
 import { cn } from "@/ui/utils/cn";
 import { safeParse } from "valibot";
 import { registerUserCoachSchema } from "@/schemas";
@@ -98,9 +99,7 @@ export default function RegisterRoute() {
                                         placeholder="Create password"
                                     />
                                 </FormControl>
-                                <FormMessagePassword 
-                                    passwordResult={safeParse(passwordSchema, field.value)}
-                                />
+                                <PasswordStrength passwordResult={safeParse(passwordSchema, field.value)} />
                             </FormItem>
                         )}
                     />

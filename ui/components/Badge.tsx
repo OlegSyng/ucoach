@@ -33,27 +33,26 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 
 
 const badgeHintVariants = tv({
-    base: "inline-flex items-center rounded-[2px] px-4 py-0.5 min-h-2.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-    variants: {
-        intent: {
-            pristine: "text-foreground bg-slate-100",
-            error: "bg-destructive text-destructive-foreground",
-            success: "bg-success text-success-foreground",
-        },
+  base: "inline-flex items-center rounded-[2px] px-4 py-0.5 min-h-2 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  variants: {
+    intent: {
+      issue: "text-foreground bg-slate-100",
+      success: "text-foreground bg-emerald-300",
     },
-    defaultVariants: {
-        intent: "pristine",
-    },
+  },
+  defaultVariants: {
+    intent: "issue",
+  },
 })
 
 export interface BadgeHintProps 
-    extends React.HTMLAttributes<HTMLLIElement>,
-    VariantProps<typeof badgeHintVariants> {}
+  extends React.HTMLAttributes<HTMLDivElement>,
+  VariantProps<typeof badgeHintVariants> {}
 
 function BadgeHint({ className, intent, ...props  }: BadgeHintProps) {
-    return (
-        <li className={cn(badgeHintVariants({ intent }), className)} {...props} />
-    )
+  return (
+    <div className={cn(badgeHintVariants({ intent }), className)} {...props} />
+  )
 }
 
 export { Badge, BadgeHint, badgeVariants }
