@@ -36,7 +36,7 @@ const badgeHintVariants = tv({
   base: "inline-flex items-center rounded-[2px] px-4 py-0.5 min-h-2 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   variants: {
     intent: {
-      issue: "text-foreground bg-slate-100",
+      issue: "text-foreground bg-slate-200",
       success: "text-foreground bg-emerald-300",
     },
   },
