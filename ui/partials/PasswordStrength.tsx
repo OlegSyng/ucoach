@@ -12,23 +12,14 @@ import {
 import { cn } from '@/ui/utils/cn'
 import { Check, X } from 'lucide-react'
 import { forwardRef, useMemo } from 'react'
-import type { SafeParseResult, StringSchema } from 'valibot'
+import { type SafeParseResult, type StringSchema } from 'valibot'
+import { ICON_XS, STROKE_WIDTH } from '../utils/CONSTS'
 
 const hintMessages = Object.values(passwordSchemaMessage).filter((message) =>
   message.includes('At least'),
 )
 
-interface PasswordStrengthProps extends React.HTMLAttributes<HTMLUListElement> {
-  passwordResult: SafeParseResult<StringSchema>
-}
-
-export const PasswordStrength = forwardRef<
-  HTMLUListElement,
-  PasswordStrengthProps
->(({ className, passwordResult, ...props }, ref) => {
-  const { issues } = passwordResult
-  const { formMessageId, isTouched } = useFormField()
-
+const useBadges = (issues: SafeParseResult<StringSchema>['issues']) => {
   const badges = useMemo(
     () =>
       hintMessages
@@ -45,7 +36,7 @@ export const PasswordStrength = forwardRef<
           return -1
         }),
     [issues],
-  )
+  ) 
 
   const messages = useMemo(() => {
     const messages = issues?.filter(
@@ -54,12 +45,24 @@ export const PasswordStrength = forwardRef<
     return messages?.length ? messages.map(({ message }) => message) : null
   }, [issues])
 
-  if (!isTouched) {
+  return { badges, messages }
+}
+
+interface PasswordStrengthProps extends React.HTMLAttributes<HTMLUListElement> {
+  passwordResult: SafeParseResult<StringSchema>
+}
+
+export const PasswordStrength = forwardRef<
+  HTMLUListElement,
+  PasswordStrengthProps
+>(({ className, passwordResult, ...props }, ref) => {
+  const { issues } = passwordResult
+  const { formMessageId, isTouched, isDirty } = useFormField()
+  const { badges, messages } = useBadges(issues)
+
+  if (!isTouched && !isDirty) {
     return null
   }
-
-  console.log('badges', badges)
-  console.log('issues', issues)
 
   return (
     <ul
@@ -86,11 +89,11 @@ export const PasswordStrength = forwardRef<
               </TooltipTrigger>
               <TooltipContent className='flex items-center'>
                 {isIssue ? (
-                  <X size={15} strokeWidth={3} className='text-destructive' />
+                  <X size={ICON_XS} strokeWidth={STROKE_WIDTH} className='text-destructive' />
                 ) : (
                   <Check
-                    size={15}
-                    strokeWidth={3}
+                    size={ICON_XS}
+                    strokeWidth={STROKE_WIDTH}
                     className='text-emerald-500'
                   />
                 )}
@@ -100,11 +103,11 @@ export const PasswordStrength = forwardRef<
           </TooltipProvider>
         </li>
       ))}
-      <li className='mt-2 w-full'>
+      <li className='mt-2 w-full text-xs'>
         {messages ? (
-          <p className='text-sm font-medium text-destructive'>{messages[0]}</p>
+          <p className='font-medium text-destructive'>{messages[0]}</p>
         ) : (
-          <p className='text-end text-xs'>Password strength</p>
+          <p className='text-end'>Password strength</p>
         )}
       </li>
     </ul>
