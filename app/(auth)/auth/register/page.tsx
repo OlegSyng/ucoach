@@ -12,15 +12,17 @@ import {
 } from '@/ui/components/Form'
 import { Heading } from '@/ui/components/Heading'
 import { Loading } from '@/ui/components/Loading'
+import { Separator } from '@/ui/components/Separator'
 import { Input } from '@/ui/components/inputs'
 import { PasswordStrength } from '@/ui/partials/PasswordStrength'
+import { Link } from '@/ui/router-events'
+import { ICON_MD } from '@/ui/utils/CONSTS'
 import { cn } from '@/ui/utils/cn'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { safeParse, Output } from 'valibot'
-import { ICON_MD } from '@/ui/utils/CONSTS'
 
 const passwordSchema = registerUserCoachSchema.entries.password
 
@@ -150,10 +152,10 @@ export default function RegisterRoute() {
             )}
           />
           <div className='mt-6 flex justify-end'>
-            <Button 
-                type='submit'
-                disabled={!formState.isValid || formState.isSubmitting}
-                variant={{ intent: 'primary' }} 
+            <Button
+              type='submit'
+              disabled={!formState.isValid || formState.isSubmitting}
+              variant={{ intent: 'primary' }}
             >
               <span className={cn(formState.isSubmitting && 'opacity-0')}>
                 Sign Up
@@ -167,6 +169,16 @@ export default function RegisterRoute() {
             </Button>
           </div>
         </form>
+        <Separator className='my-4' />
+        <div className='text-sm'>
+          Have an account?{' '}
+          <Link
+            className='font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400'
+            href='/auth/login'
+          >
+            Sign In
+          </Link>
+        </div>
       </Form>
     </>
   )
