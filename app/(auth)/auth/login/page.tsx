@@ -18,17 +18,16 @@ import { toast } from '@/ui/components/toast'
 import { Link } from '@/ui/router-events'
 import { ICON_MD } from '@/ui/utils/CONSTS'
 import { cn } from '@/ui/utils/cn'
-import { SERVER_URL } from '@/ui/utils/endpoints'
 import { valibotResolver } from '@hookform/resolvers/valibot'
-import axios from 'axios'
 import { Eye, EyeOff } from 'lucide-react'
+import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { number, object, string, parse, Output } from 'valibot'
 
 const responseSchema = object({
-    code: number(),
-    message: string(),
+  code: number(),
+  message: string(),
 })
 
 type LoginData = Output<typeof responseSchema>
@@ -51,24 +50,11 @@ export default function LoginRoute() {
     event?.preventDefault()
     try {
       const formData = parse(loginSchema, data)
-      const response = await axios.post<LoginData>(
-        SERVER_URL + '/auth/login',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          withCredentials: true,
-        },
-      )
-      if (response.data.code === 1) {
-        toast({
-          title: 'Success',
-          description: 'Now redirecting to dashboard',
-          intent: 'success',
-        })
-      }
+      await signIn('credentials', {
+        username: formData.username,
+        password: formData.password,
+        redirect: false,
+      })
     } catch (error) {
       toast({
         title: 'Error signing you in',
