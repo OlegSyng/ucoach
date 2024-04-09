@@ -18,7 +18,7 @@ import { toast } from '@/ui/components/toast'
 import { Link } from '@/ui/router-events'
 import { ICON_MD } from '@/ui/utils/CONSTS'
 import { cn } from '@/ui/utils/cn'
-import { API_URL } from '@/ui/utils/endpoints'
+import { SERVER_URL } from '@/ui/utils/endpoints'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import axios from 'axios'
 import { Eye, EyeOff } from 'lucide-react'
@@ -52,13 +52,14 @@ export default function LoginRoute() {
     try {
       const formData = parse(loginSchema, data)
       const response = await axios.post<LoginData>(
-        API_URL + '/auth/login',
+        SERVER_URL + '/auth/login',
         formData,
         {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
+          withCredentials: true,
         },
       )
       if (response.data.code === 1) {
