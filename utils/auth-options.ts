@@ -1,5 +1,5 @@
 import { loginSchema, loginResponseSchema, userSchema } from '@/schemas'
-import { SERVER_URL } from '@/ui/utils/endpoints'
+import { SERVER_URL, AUTHCOOKIE } from '@/utils/endpoints'
 import axios from 'axios'
 import { parse } from 'cookie'
 import { type NextAuthOptions } from 'next-auth'
@@ -11,10 +11,9 @@ type LoginResponse = Output<typeof loginResponseSchema>
 type User = Output<typeof userSchema>
 
 const MAX_AGE = 60 * 60 * 1 // 1 hour
-const SERVER_COOKIE_NAME = 'session-ucoach'
 
 export const options: NextAuthOptions = {
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
     maxAge: MAX_AGE, // How long until an idle session expires and is no longer valid
@@ -47,15 +46,14 @@ export const options: NextAuthOptions = {
             apiCookies.forEach((cookie) => {
               const parsedCookie = parse(cookie)
 
-              if (parsedCookie[SERVER_COOKIE_NAME]) {
+              if (parsedCookie[AUTHCOOKIE]) {
                 cookies().set({
-                  name: SERVER_COOKIE_NAME,
-                  value: parsedCookie[SERVER_COOKIE_NAME],
-                  maxAge: parseInt(parsedCookie['Max-Age']),
+                  name: AUTHCOOKIE,
+                  value: parsedCookie[AUTHCOOKIE],
                   path: parsedCookie['Path'],
                   httpOnly: true,
-                  secure: false, // TODO: 'true' for HTTPS (production only)
-                  sameSite: 'none', // TODO: 'none' for HTTPS (production only)
+                  secure: true, // TODO: 'true' for HTTPS (production only)
+                  sameSite: 'none', // TODO: 'lax' for HTTPS (production only)
                   expires: new Date(parsedCookie['Expires']),
                 })
               }
@@ -86,7 +84,7 @@ export const options: NextAuthOptions = {
             SERVER_URL + '/users/' + user.id,
             {
               headers: {
-                Cookie: `${SERVER_COOKIE_NAME}=${cookies().get(SERVER_COOKIE_NAME)?.value}`,
+                Cookie: `${AUTHCOOKIE}=${cookies().get(AUTHCOOKIE)?.value}`,
               },
             },
           )
@@ -104,7 +102,7 @@ export const options: NextAuthOptions = {
           }
         } catch (error) {
           console.error(error)
-        } 
+        }
       }
       return token
     },

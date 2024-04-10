@@ -21,19 +21,18 @@ import { cn } from '@/ui/utils/cn'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { number, object, string, parse, Output } from 'valibot'
+import { parse } from 'valibot'
 
-const responseSchema = object({
-  code: number(),
-  message: string(),
-})
-
-type LoginData = Output<typeof responseSchema>
-
-export default function LoginRoute() {
+export default function LoginRoute({
+  searchParams: { action, target },
+}: {
+  searchParams: { action?: string; target?: string }
+}) {
   const [showPassword, setShowPassword] = useState(false)
+  const { push } = useRouter()
   const { formState, ...form } = useForm({
     mode: 'onTouched',
     resolver: valibotResolver(loginSchema),
@@ -49,12 +48,26 @@ export default function LoginRoute() {
   ) {
     event?.preventDefault()
     try {
-      const formData = parse(loginSchema, data)
-      await signIn('credentials', {
-        username: formData.username,
-        password: formData.password,
+      const { username, password } = parse(loginSchema, data)
+      const result = await signIn('credentials', {
+        username,
+        password,
         redirect: false,
       })
+      if (result?.ok) {
+        toast({
+          title: 'Signed in successfully',
+          description: 'Redirecting you to your dashboard',
+          intent: 'success',
+        })
+        if (action === 'redirect_after' && target) {
+          push(target)
+        } else {
+          push('/')
+        }
+      } else {
+        throw new Error('An error occurred')
+      }
     } catch (error) {
       toast({
         title: 'Error signing you in',
@@ -107,7 +120,7 @@ export default function LoginRoute() {
                           setShowPassword((prev) => !prev)
                         }}
                         variant={{ intent: 'icon' }}
-                        className='border-none'
+                        className='border-none bg-transparent shadow-none'
                       >
                         {showPassword ? <EyeOff /> : <Eye />}
                       </Button>
