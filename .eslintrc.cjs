@@ -6,14 +6,9 @@ const config = {
   },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  extends: [
-    'next/core-web-vitals',
-    'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:@typescript-eslint/stylistic-type-checked',
-  ],
+  extends: ['next', 'next/core-web-vitals'],
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    "@typescript-eslint/consistent-type-definitions": "off",
   },
 }
 
