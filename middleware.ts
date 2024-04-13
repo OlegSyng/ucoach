@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { BASE_URL } from './utils/endpoints'
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.SECRET })
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
   if (!token) {
     const loginUrl = new NextURL('/auth/login', BASE_URL)
     if (req.nextUrl.pathname !== '/') {

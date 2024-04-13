@@ -4,7 +4,6 @@ import { Heading } from '@/ui/components/Heading'
 import apiClient from '@/utils/axiosInstance'
 import { SERVER_URL } from '@/utils/endpoints'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 
 export default function Home() {
   const { data } = useQuery({

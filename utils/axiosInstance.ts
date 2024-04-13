@@ -1,33 +1,22 @@
-import { SERVER_URL, AUTHCOOKIE } from '@/utils/endpoints'
-import { IS_DEV } from '@/utils/is_dev'
-import { IS_SERVER } from '@/utils/is_server'
-import axios, { AxiosInstance } from 'axios'
-import { getCookies, getCookie } from 'cookies-next'
+import { SERVER_URL } from '@/utils/endpoints'
+import axios, { AxiosInstance, isAxiosError } from 'axios'
+import { signOut } from 'next-auth/react'
 
 /**
- * @description Axios instance with interceptors
+ * @name ApiClient
+ * @description Axios instance with interceptors (use client)
+ * @returns AxiosInstance
  */
 function ApiClient(): AxiosInstance {
   const instance = axios.create({
     baseURL: SERVER_URL,
-    withCredentials: true,
+    withCredentials: true, // send cookies when making requests.
     headers: {
       Accept: 'application/json',
     },
   })
 
-  instance.interceptors.request.use(async (request) => {
-    let token
-    // checking if the code is running on the server or client to get the cookie from server headers.
-    if (IS_SERVER) {
-      const { cookies } = await import('next/headers')
-      token = cookies().get(AUTHCOOKIE)?.value
-      // if the code is running on the client, get the cookie from the browser.
-      request.headers.set('Cookie', `${AUTHCOOKIE}=${token}`)
-    } else {
-      instance.defaults.withCredentials = true
-    }
-
+  instance.interceptors.request.use((request) => {
     return request
   })
 
@@ -35,8 +24,14 @@ function ApiClient(): AxiosInstance {
     (response) => {
       return response
     },
-    (error) => {
-      // intercept the error on the response.
+    async (error) => {
+      if (isAxiosError(error)) {
+        if (error?.response?.status === 401) {
+          await signOut() // sign out client if server session is invalid.
+        }
+      } else {
+        console.error(error)
+      }
     },
   )
   return instance
