@@ -1,6 +1,7 @@
 'use client'
 
 import { Heading } from '@/ui/components/Heading'
+import { useRouter } from '@/ui/router-events'
 import apiClient from '@/utils/axiosInstance'
 import { SERVER_URL } from '@/utils/endpoints'
 import { useQuery } from '@tanstack/react-query'
@@ -16,6 +17,7 @@ export default function Home() {
       return response.data
     },
   })
+  const { push } = useRouter()
 
   console.log(data)
 
@@ -24,6 +26,13 @@ export default function Home() {
       <Heading level={1} className='text-center'>
         Welcome to your new app
       </Heading>
+      <button
+        onClick={() => {
+          push('/dashboard')
+        }}
+      >
+        Go to Dashboard
+      </button>
     </div>
   )
 }

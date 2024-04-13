@@ -1,4 +1,4 @@
-import { loginSchema, loginResponseSchema, userSchema } from '@/schemas'
+import { loginSchema, loginResponseSchema, UserType } from '@/schemas'
 import { SERVER_URL, AUTHCOOKIE } from '@/utils/endpoints'
 import axios from 'axios'
 import { parse } from 'cookie'
@@ -8,7 +8,6 @@ import { cookies } from 'next/headers'
 import { Output, safeParse } from 'valibot'
 
 type LoginResponse = Output<typeof loginResponseSchema>
-type User = Output<typeof userSchema>
 
 const MAX_AGE = 60 * 60 * 1 // 1 hour
 
@@ -80,7 +79,7 @@ export const options: NextAuthOptions = {
         token.id = user.id
 
         try {
-          const response = await axios.get<User>(
+          const response = await axios.get<UserType>(
             SERVER_URL + '/users/' + user.id,
             {
               headers: {
@@ -90,15 +89,7 @@ export const options: NextAuthOptions = {
           )
 
           if (response.data) {
-            token.username = response.data.username
-            token.email = response.data.email
-            token.firstName = response.data.firstName
-            token.lastName = response.data.lastName
-            token.isCoach = response.data.isCoach
-            token.coachId = response.data.coachId
-            token.dateOfBirth = response.data.dateOfBirth
-            token.weight = response.data.weight
-            token.imageUrl = response.data.imageUrl
+            token.user = response.data
           }
         } catch (error) {
           console.error(error)
@@ -106,8 +97,8 @@ export const options: NextAuthOptions = {
       }
       return token
     },
-    session({ session, token }) {
-      session.user = { ...token }
+    async session({ session, token }) {
+      session.user = token.user
       return session
     },
   },

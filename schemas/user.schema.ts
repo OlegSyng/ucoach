@@ -1,4 +1,12 @@
-import { boolean, number, object, string, array, nullable } from 'valibot'
+import {
+  boolean,
+  number,
+  object,
+  string,
+  array,
+  nullable,
+  Output,
+} from 'valibot'
 
 const weightDataSchema = object({
   data: number(),
@@ -15,4 +23,7 @@ export const userSchema = object({
   dateOfBirth: nullable(string()),
   weight: nullable(array(weightDataSchema)),
   imageUrl: nullable(string()),
+  _id: string(),
 })
+
+export type UserType = Output<typeof userSchema>
