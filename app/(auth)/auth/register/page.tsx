@@ -138,7 +138,7 @@ export default function RegisterRoute() {
                           setShowPassword((prev) => !prev)
                         }}
                         variant={{ intent: 'icon' }}
-                        className='border-none'
+                        className='border-none shadow-none bg-transparent'
                       >
                         {showPassword ? <EyeOff /> : <Eye />}
                       </Button>
