@@ -1,45 +1,45 @@
+import { Section, EndpointBase } from '@/schemas'
+
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
 export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL!
 
-export const AUTHCOOKIE = 'session-ucoach'
+export const SERVER_AUTHCOOKIE = 'session-ucoach'
 export const CLIENT_AUTHCOOKIE = 'next-auth.session-token'
 
-type Sections = 'Home' | 'Calendar' | 'Training' | 'Profile'
-export interface IEndpoint {
-  title: string
-  url: string
-  section: Sections
-}
-
-export const endpoints: Record<string, IEndpoint> = {
+export const ENDPOINTS: Record<string, EndpointBase> = {
   home: {
     title: 'Home',
     url: '/app',
-    section: 'Home',
+    section: Section.Home,
   },
   calendar: {
     title: 'Calendar',
     url: '/app/calendar',
-    section: 'Calendar',
+    section: Section.Calendar,
   },
   trainings: {
     title: 'Trainings',
     url: '/app/trainings',
-    section: 'Training',
+    section: Section.Trainings,
   },
-  exersises: {
+  exercises: {
     title: 'Exersises',
-    url: '/app/exersises',
-    section: 'Training',
+    url: '/app/exercises',
+    section: Section.Trainings,
   },
   programs: {
     title: 'Programs',
     url: '/app/programs',
-    section: 'Training',
+    section: Section.Trainings,
+  },
+  team: {
+    title: 'Team',
+    url: '/app/team',
+    section: Section.Team,
   },
   profile: {
     title: 'Profile',
     url: '/app/profile',
-    section: 'Profile',
+    section: Section.Profile,
   },
 }

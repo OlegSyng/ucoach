@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          'font-inter min-h-screen min-w-full bg-slate-100 text-slate-600 antialiased dark:bg-slate-900 dark:text-slate-400',
+          'font-inter min-h-screen min-w-full text-slate-600 antialiased dark:bg-slate-900 dark:text-slate-400',
         )}
       >
         <RouterEventsProvider>

@@ -1,5 +1,5 @@
 import { loginSchema, loginResponseSchema, UserType } from '@/schemas'
-import { SERVER_URL, AUTHCOOKIE } from '@/utils/endpoints'
+import { SERVER_URL, SERVER_AUTHCOOKIE } from '@/utils/endpoints'
 import axios from 'axios'
 import { parse } from 'cookie'
 import { type NextAuthOptions } from 'next-auth'
@@ -45,10 +45,10 @@ export const options: NextAuthOptions = {
             apiCookies.forEach((cookie) => {
               const parsedCookie = parse(cookie)
 
-              if (parsedCookie[AUTHCOOKIE]) {
+              if (parsedCookie[SERVER_AUTHCOOKIE]) {
                 cookies().set({
-                  name: AUTHCOOKIE,
-                  value: parsedCookie[AUTHCOOKIE],
+                  name: SERVER_AUTHCOOKIE,
+                  value: parsedCookie[SERVER_AUTHCOOKIE],
                   path: parsedCookie['Path'],
                   httpOnly: true,
                   secure: true, // TODO: 'true' for HTTPS (production only)
@@ -83,7 +83,7 @@ export const options: NextAuthOptions = {
             SERVER_URL + '/users/' + user.id,
             {
               headers: {
-                Cookie: `${AUTHCOOKIE}=${cookies().get(AUTHCOOKIE)?.value}`,
+                Cookie: `${SERVER_AUTHCOOKIE}=${cookies().get(SERVER_AUTHCOOKIE)?.value}`,
               },
             },
           )
