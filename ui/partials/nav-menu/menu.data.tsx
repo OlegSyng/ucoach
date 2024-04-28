@@ -1,15 +1,9 @@
-import { Endpoint, EndpointGroup } from '@/schemas'
 import { ENDPOINTS } from '@/utils/endpoints'
 import { TrophyIcon, DumbbellIcon, MedalIcon, UsersIcon } from 'lucide-react'
 
-export const menu: (Endpoint | EndpointGroup)[] = [
-  {
-    ...ENDPOINTS.home,
-  },
-  {
-    ...ENDPOINTS.calendar,
-  },
-  {
+export const menu = {
+  calendar: ENDPOINTS.calendar,
+  workouts: {
     title: 'Workouts',
     sub_menu: [
       {
@@ -32,7 +26,7 @@ export const menu: (Endpoint | EndpointGroup)[] = [
       },
     ],
   },
-  {
+  team: {
     title: 'Team',
     sub_menu: [
       {
@@ -43,7 +37,5 @@ export const menu: (Endpoint | EndpointGroup)[] = [
       },
     ],
   },
-  {
-    ...ENDPOINTS.profile,
-  },
-]
+  profile: ENDPOINTS.profile,
+}

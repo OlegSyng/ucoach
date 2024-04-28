@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 
 type MediaQuery = { name: string; breakpoint: string }
 
-export function useMediaQuery(query: MediaQuery[]): {
-  [key: string]: boolean
-} {
+export function useMediaQuery(query: MediaQuery[]): { [key: string]: boolean } {
   const getMatches = (query: MediaQuery[]): { [key: string]: boolean } => {
     if (typeof window !== 'undefined') {
       const matches: { [key: string]: boolean } = {}
@@ -33,7 +31,7 @@ export function useMediaQuery(query: MediaQuery[]): {
       if (matchMedia.addEventListener) {
         matchMedia.addEventListener('change', handleChange)
       } else {
-        matchMedia.addListener(handleChange)
+        matchMedia.addListener(handleChange) //old browsers
       }
     })
 
@@ -42,7 +40,7 @@ export function useMediaQuery(query: MediaQuery[]): {
         if (matchMedia.removeEventListener) {
           matchMedia.removeEventListener('change', handleChange)
         } else {
-          matchMedia.removeListener(handleChange)
+          matchMedia.removeListener(handleChange) //old browsers
         }
       })
     }

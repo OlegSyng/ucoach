@@ -20,7 +20,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
     <UserService user={user}>
       <div className='flex h-[100dvh] overflow-hidden'>
         <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
-          <NavMenu hideNavbar={false} />
+          <NavMenu hideNavMenu={false} />
           <main className='w-full grow'>{children}</main>
           {/* <Footer /> */}
         </div>
