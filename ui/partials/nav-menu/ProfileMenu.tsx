@@ -29,7 +29,7 @@ export function ProfileMenu() {
     <Menubar className='h-auto border-0'>
       <MenubarMenu>
         <MenubarTrigger
-          className='rounded-full p-1.5'
+          className='cursor-pointer rounded-full p-0'
           onPointerMove={(event) => event.preventDefault()}
           onPointerLeave={(event) => event.preventDefault()}
         >

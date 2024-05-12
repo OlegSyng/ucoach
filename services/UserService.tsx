@@ -4,16 +4,17 @@ import { UserType } from '@/schemas'
 import { createSafeContext } from '@/ui/utils/createSafeContext'
 import { type ReactNode } from 'react'
 
-type UserServiceProps = {
-  user: UserType | undefined
-  children: ReactNode
-}
-
 const [UserSafeProvider, useUserService] = createSafeContext<{
   user: UserType | undefined
 }>('')
 
-export function UserService({ user, children }: UserServiceProps) {
+export function UserService({
+  children,
+  user,
+}: {
+  children: ReactNode
+  user?: UserType
+}) {
   return <UserSafeProvider value={{ user }}>{children}</UserSafeProvider>
 }
 

@@ -26,21 +26,13 @@ export function HamburgerIcons({ isOpen }: HamburgerIconsProps) {
     >
       <Path
         variants={{
-          closed: { d: 'M 2 5.5 L 22 5.5' },
+          closed: { d: 'M 2 7.5 L 22 7.5' },
           open: { d: 'M 18 6 6 18' },
         }}
       />
       <Path
-        d='M 2 12.423 L 22 12.423'
         variants={{
-          closed: { opacity: 1 },
-          open: { opacity: 0 },
-        }}
-        transition={{ duration: 0.1 }}
-      />
-      <Path
-        variants={{
-          closed: { d: 'M 2 19.346 L 22 19.346' },
+          closed: { d: 'M 2 17.346 L 22 17.346' },
           open: { d: 'm6 6 12 12' },
         }}
       />

@@ -22,10 +22,11 @@ export function DesktopMenu() {
       <NavigationMenu className='max-w-full justify-start'>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link href={menu.calendar.url} legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                {menu.calendar.title}
-              </NavigationMenuLink>
+            <Link
+              href={menu.calendar.url}
+              className={navigationMenuTriggerStyle()}
+            >
+              {menu.calendar.title}
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -51,10 +52,9 @@ export function DesktopMenu() {
                   </NavigationMenuLink>
                 </li>
                 {menu.workouts.sub_menu.map((route) => (
-                  <li>
+                  <li key={route.title}>
                     <NavigationMenuLink asChild>
                       <MenuItem
-                        key={route.title}
                         icon={route.icon}
                         href={route.url}
                         title={route.title}
@@ -72,10 +72,9 @@ export function DesktopMenu() {
             <NavigationMenuContent>
               <ul className='grid gap-3 p-6 lg:w-[700px] lg:grid-cols-[.75fr_1fr]'>
                 {menu.team.sub_menu.map((route) => (
-                  <li>
+                  <li key={route.title}>
                     <NavigationMenuLink asChild>
                       <MenuItem
-                        key={route.title}
                         icon={route.icon}
                         href={route.url}
                         title={route.title}
