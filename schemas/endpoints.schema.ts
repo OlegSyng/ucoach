@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 
-export enum Section {
+enum Section {
   Home, // all
   Calendar, // all
   Trainings, // all
@@ -8,20 +8,27 @@ export enum Section {
   Profile, // all
 }
 
-export interface EndpointBase {
+interface EndpointBase {
   title: string
   url: string
   section: Section
 }
 
-export interface Endpoint extends EndpointBase {
+interface Endpoint extends EndpointBase {
   icon?: ReactNode
   description?: string
   description_short?: string
 }
 
-export interface EndpointGroup {
+interface EndpointGroup {
   title: string
   sub_menu: Endpoint[]
   icon?: ReactNode
+}
+
+export {
+  Section,
+  type EndpointBase,
+  type Endpoint,
+  type EndpointGroup,
 }

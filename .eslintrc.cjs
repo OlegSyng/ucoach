@@ -5,7 +5,7 @@ const config = {
     project: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', '@tanstack/query'],
   extends: ['next', 'next/core-web-vitals'],
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
