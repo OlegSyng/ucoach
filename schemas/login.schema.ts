@@ -1,5 +1,5 @@
 import { object, string, minLength } from 'valibot'
-import { MessageCode } from './base-response.schema'
+import { messageCode } from './api.schema'
 
 export const loginSchema = object({
   username: string([minLength(1, 'Username is required')]),
@@ -8,6 +8,6 @@ export const loginSchema = object({
 
 export const loginResponseSchema = object({
   userId: string(),
-  code: MessageCode,
+  code: messageCode,
   message: string(),
 })
