@@ -12,7 +12,12 @@ import { m, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { useState } from 'react'
 import { HamburgerIcons } from './HamburgerIcons'
 import { MenuItem } from './MenuItem'
+import { EndpointBase, EndpointGroup } from '@/schemas'
 import { menu } from './menu.data'
+
+function isEndpointGroup(item: EndpointBase | EndpointGroup): item is EndpointGroup {
+  return 'sub_menu' in item
+}
 
 export function MobileMenu() {
   const [isRouting, setIsRouting] = useState(false) // Allows closing the menu when navigating
@@ -75,10 +80,10 @@ export function MobileMenu() {
               <Accordion type='multiple'>
                 {Object.values(menu).map(
                   (
-                    menuItem: any, // TODO: Fix type
+                    menuItem
                   ) => (
                     <m.div variants={listItem} key={menuItem.title}>
-                      {menuItem.sub_menu ? (
+                      {isEndpointGroup(menuItem) ? (
                         <AccordionItem
                           value={menuItem.title}
                           className='relative block text-base font-medium text-foreground'

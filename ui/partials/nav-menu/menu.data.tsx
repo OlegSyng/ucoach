@@ -1,7 +1,8 @@
+import { EndpointBase, EndpointGroup } from '@/schemas'
 import { ENDPOINTS } from '@/utils/endpoints'
 import { TrophyIcon, DumbbellIcon, MedalIcon, UsersIcon } from 'lucide-react'
 
-export const menu = {
+export const menu: Record<string, EndpointBase | EndpointGroup> = {
   calendar: ENDPOINTS.calendar,
   workouts: {
     title: 'Workouts',
